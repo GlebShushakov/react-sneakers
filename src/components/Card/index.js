@@ -1,26 +1,39 @@
 import styles from "./Card.module.scss";
+import React from "react";
 
 console.log(styles);
 
-function Card(props) {
-  const onClickButton = () => {
-    alert(props.price);
+function Card({ onClickFavorite, imageUrl, title, price, onPlus }) {
+  const [isAdded, setIsAdded] = React.useState(false);
+
+  const onClickPlus = () => {
+    onPlus({ imageUrl, title, price });
+    setIsAdded(!isAdded);
   };
+
+  React.useEffect(() => {
+    console.log("переменная изменилась");
+  }, [isAdded]);
+
   return (
     <div className={styles.card}>
-      <div className={styles.favorite}>
+      <div className={styles.favorite} onClick={onClickFavorite}>
         <img src="/img/hearth-off.svg" alt="unliked" />
       </div>
-      <img width={133} height={112} src={props.imageUrl} alt="sneakers" />
-      <h5>{props.title}</h5>
+      <img width={133} height={112} src={imageUrl} alt="sneakers" />
+      <h5>{title}</h5>
       <div className="d-flex justify-between align-center">
         <div className="d-flex flex-column">
           <span>Цена:</span>
-          <b>{props.price} руб.</b>
+          <b>{price} руб.</b>
         </div>
-        <button className="button" onClick={onClickButton}>
-          <img width={11} height={11} src="/img/plus.svg" alt="plus" />
-        </button>
+
+        <img
+          className={styles.plus}
+          onClick={onClickPlus}
+          src={isAdded ? "/img/submit.svg" : "/img/plus.svg"}
+          alt="plus"
+        />
       </div>
     </div>
   );
